@@ -1,3 +1,3 @@
 export const ENV={
-  SS_NgRX_PORT:'5001'
+  MAIN_PROD_PORT:'5001'
 }
