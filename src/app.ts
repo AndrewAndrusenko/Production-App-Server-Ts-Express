@@ -22,12 +22,15 @@ app.use(expStatGzip(
     {
         enableBrotli:true,
         orderPreference:['br','gz'],
+        index: false, // <-- Отключает автоматический перехват index.html
         maxAge: '1y',
-        setHeaders:(res:any, filePath:any) => {
-            if (path.basename(filePath) === 'index.html') {
-                res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate')
-            } else {
-                res.setHeader('Cache-Control','public, max-age=31536000, immutable')
+        serveStatic: { 
+            setHeaders:(res:any, filePath:any) => {
+                if (path.basename(filePath) === 'index.html') {
+                    res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate')
+                } else {
+                    res.setHeader('Cache-Control','public, max-age=31536000, immutable')
+                }
             }
         }
     } 
@@ -36,6 +39,9 @@ app.use('/favicon.ico', express.static('images/favicon.ico'));
 app.use('/apps', appToServe.router);
 app.use('/', appIndex.router);
 
+app.use('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
+    res.sendStatus(204); 
+});
 app.use(function(req, res, next) {
   next(createError(404));
 });
