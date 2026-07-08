@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "tsc-start": "npx tsc-watch --onSuccess \"node ./dist/bin/prod-main\"",
+    "build:assets": "cpx \"src/views/**/*\" dist/views",
+    "watch:assets": "concurrently \"cpx \"src/views/**/*\" dist/views --watch\"",
+    "tsc-start": "npm run build:assets && concurrently \"npm run watch:assets\" \"npx tsc-watch --onSuccess \\\"node ./dist/bin/prod-main\\\"\"",
     "tsc": "npx tsc -w"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^17.4.2",
     "express": "~4.16.1",
     "express-static-gzip": "^3.0.1",
     "http-errors": "~1.6.3",
@@ -21,6 +24,8 @@
     "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
+    "concurrently": "^10.0.3",
+    "cpx2": "^9.0.0",
     "nodemon": "^3.1.7",
     "typescript": "^5.7.2"
   }

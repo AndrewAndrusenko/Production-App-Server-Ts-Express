@@ -1,9 +1,9 @@
 import {app}  from '../app'
-import {ENV} from '../env/env'
+import 'dotenv/config'
 import http from 'http';
 import { HttpError } from 'http-errors';
 
-var port = normalizePort(process.env.PORT || ENV.MAIN_PROD_PORT);
+var port = normalizePort(process.env.MAIN_PROD_PORT || '5001');
 console.log('port',port);
 app.set('port', port);
 
